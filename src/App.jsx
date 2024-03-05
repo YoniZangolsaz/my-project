@@ -31,20 +31,35 @@ function App() {
       }
       newTable[b][a] = parseInt(e);
 
+      const getLeftSlantSum = (array, row, col) => {
+        return array.reduce((sum, rowArr, i) => {
+          const j = col - row + i;
+          if (j >= 0 && j < rowArr.length) {
+            sum += rowArr[j];
+          }
+          return sum;
+        }, 0);
+      };
+
+      const getRightSlantSum = (array, row, col) => {
+        return array.reduce((sum, rowArr, i) => {
+          const j = col + row - i;
+          if (j >= 0 && j < rowArr.length) {
+            sum += rowArr[j];
+          }
+          return sum;
+        }, 0);
+      };
+      const sumDiognalLeft = getLeftSlantSum(newTable, b, a);
+      const sumDiognalRight = getRightSlantSum(newTable, b, a);
       const sumRow = newTable[b].reduce((a, b) => a + b);
       const sumColumn = newTable.map((row) => row[a]).reduce((a, b) => a + b);
-      const diagonal1 = newTable
-        .map((row, i) => row[i])
-        .reduce((a, b) => a + b);
-      const diagonal2 = newTable
-        .map((row, i) => row[row.length - 1 - i])
-        .reduce((a, b) => a + b);
 
       if (
         sumRow > sum ||
         sumColumn > sum ||
-        diagonal1 > sum ||
-        diagonal2 > sum
+        sumDiognalLeft > sum ||
+        sumDiognalRight > sum
       ) {
         window.alert("You exceeded the sum limit");
       }
